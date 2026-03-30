@@ -25,7 +25,7 @@
 					"name": "lookup1"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "split1"
 				}
 			],
 			"scriptLines": [
@@ -50,11 +50,12 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srcproductdim",
-				"derivedColumn1, srcproductdim lookup(ProductID == srcproductdim@Product,",
+				"srccsvprd, srcproductdim lookup(ProductID == srcproductdim@Product,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
-				"srccsvprd derive(ProductID = toInteger(ProductID)) ~> derivedColumn1"
+				"lookup1 split(ERROR_FUNCTION(''),",
+				"     disjoint: false) ~> split1@(, )"
 			]
 		}
 	}
