@@ -55,6 +55,7 @@
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
 				"lookup1 split(isNull(srcproductdim.Product),",
+				"     Price != srcproductdim.Price,",
 				"     disjoint: true) ~> split1@(newRecords, UpdatedRecords)"
 			]
 		}
