@@ -53,9 +53,6 @@
 				},
 				{
 					"name": "alterRow2"
-				},
-				{
-					"name": "alterRow3"
 				}
 			],
 			"scriptLines": [
@@ -102,8 +99,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"split1@newrecords alterRow(insertIf(true())) ~> alterRow1",
-				"alterRow3 alterRow(updateIf(true())) ~> alterRow2",
-				"split1@updatedRecord alterRow() ~> alterRow3",
+				"split1@updatedRecord alterRow(updateIf(true())) ~> alterRow2",
 				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
