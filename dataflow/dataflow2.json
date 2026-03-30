@@ -55,7 +55,7 @@
 					"name": "alterRow2"
 				},
 				{
-					"name": "derivedColumn2"
+					"name": "alterRow3"
 				}
 			],
 			"scriptLines": [
@@ -102,8 +102,8 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"split1@newrecords alterRow(insertIf(true())) ~> alterRow1",
-				"derivedColumn2 alterRow(updateIf(true())) ~> alterRow2",
-				"split1@updatedRecord derive() ~> derivedColumn2",
+				"alterRow3 alterRow(updateIf(true())) ~> alterRow2",
+				"split1@updatedRecord alterRow() ~> alterRow3",
 				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
