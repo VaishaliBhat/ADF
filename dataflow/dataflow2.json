@@ -178,7 +178,7 @@
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          ProductID = ProductID_dim,",
-				"          StartDate = IsActive,",
+				"          StartDate,",
 				"          EndDate,",
 				"          IsActive",
 				"     )) ~> sink3"
