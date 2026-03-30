@@ -26,24 +26,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
-				},
-				{
-					"dataset": {
-						"referenceName": "productDimtblprj5",
-						"type": "DatasetReference"
-					},
-					"name": "sink2"
-				},
-				{
-					"dataset": {
-						"referenceName": "productDimtblprj5",
-						"type": "DatasetReference"
-					},
-					"name": "updateSinkProductDIm",
-					"rejectedDataLinkedService": {
-						"referenceName": "AzureBlobStorage1",
-						"type": "LinkedServiceReference"
-					}
 				}
 			],
 			"transformations": [
@@ -138,51 +120,12 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-				"alterrowInsert sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          ProductID as integer,",
-				"          Product as string,",
-				"          Price as integer,",
-				"          StartDate as date,",
-				"          EndDate as date,",
-				"          IsActive as boolean",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          StartDate,",
 				"          EndDate,",
 				"          IsActive",
-				"     )) ~> sink2",
-				"alterupdate sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          ProductID as integer,",
-				"          Product as string,",
-				"          Price as integer,",
-				"          StartDate as date,",
-				"          EndDate as date,",
-				"          IsActive as boolean",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:false,",
-				"     updateable:true,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          ProductID = ProductID_dim",
-				"     )) ~> updateSinkProductDIm"
+				"     )) ~> sink1"
 			]
 		}
 	}
