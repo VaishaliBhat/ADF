@@ -13,7 +13,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "salesADF",
+						"referenceName": "productDimtblprj5",
 						"type": "DatasetReference"
 					},
 					"name": "srcproductdim"
@@ -44,21 +44,23 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> srccsvprd",
 				"source(output(",
-				"          OrderID as integer,",
+				"          ProductID as integer,",
 				"          Product as string,",
-				"          Amount as integer,",
-				"          OrderDate as date",
+				"          Price as integer,",
+				"          StartDate as date,",
+				"          EndDate as date,",
+				"          IsActive as boolean",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srcproductdim",
-				"derivedColumn1, srcproductdim lookup(ProductID == OrderID,",
+				"derivedColumn1, srcproductdim lookup(derivedColumn1@ProductID == OrderID,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
 				"lookup1 split(isNull(srcproductdim.ProductID),",
-				"     Price != srcproductdim.Price,",
+				"     derivedColumn1@Price != srcproductdim.Price,",
 				"     disjoint: true) ~> split1@(newRecords, UpdatedRecord, nochange)",
 				"srccsvprd derive(ProductID = toInteger(ProductID),",
 				"          Price = toInteger(Price)) ~> derivedColumn1"
