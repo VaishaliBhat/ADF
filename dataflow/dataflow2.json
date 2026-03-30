@@ -16,8 +16,7 @@
 						"referenceName": "salesADF",
 						"type": "DatasetReference"
 					},
-					"name": "srcproductdim",
-					"description": "Import data from productADF"
+					"name": "srcproductdim"
 				}
 			],
 			"sinks": [],
