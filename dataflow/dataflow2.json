@@ -55,7 +55,7 @@
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
 				"lookup1 split(ERROR_FUNCTION(''),",
-				"     disjoint: false) ~> split1@(, )"
+				"     disjoint: true) ~> split1@(, )"
 			]
 		}
 	}
