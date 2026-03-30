@@ -55,7 +55,7 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srcproductdim",
-				"derivedColumn1, srcproductdim lookup(derivedColumn1@ProductID == OrderID,",
+				"derivedColumn1, srcproductdim lookup(derivedColumn1@ProductID == srcproductdim@ProductID,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
