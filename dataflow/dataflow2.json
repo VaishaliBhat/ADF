@@ -125,7 +125,8 @@
 				"          StartDate,",
 				"          EndDate,",
 				"          IsActive",
-				"     )) ~> sink1"
+				"     ),",
+				"     partitionBy('roundRobin', 3)) ~> sink1"
 			]
 		}
 	}
