@@ -61,6 +61,9 @@
 				},
 				{
 					"name": "updatecombined"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -106,7 +109,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"split1@newrecords alterRow(insertIf(true())) ~> alterNewrow",
+				"derivedColumn2 alterRow(insertIf(true())) ~> alterNewrow",
 				"dcadditionalcol alterRow(insertIf(true())) ~> alterrowInsert",
 				"split1@updatedRecord derive(StartDate = currentTimestamp(),",
 				"          EndDate = toTimestamp('9999-12-31'),",
@@ -117,6 +120,8 @@
 				"          StartDate = currentTimestamp()) ~> dcupdate",
 				"alterupdate, alterNewrow union(byName: true)~> unionUpdateNewrow",
 				"unionUpdateNewrow, alterrowInsert union(byName: true)~> updatecombined",
+				"split1@newrecords derive(StartDate = currentTimestamp(),",
+				"          EndDate = currentTimestamp()) ~> derivedColumn2",
 				"updatecombined sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
