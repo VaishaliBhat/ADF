@@ -1,0 +1,9 @@
+{
+	"name": "vaishalibhatan-df",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "283dc015-c3e2-4ac4-ad30-56a87d2ba6aa",
+		"tenantId": "3ad9f056-b979-4fb3-9b40-b6799ae57b76"
+	}
+}
