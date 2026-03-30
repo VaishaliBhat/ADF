@@ -54,8 +54,8 @@
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
-				"lookup1 split(ERROR_FUNCTION(''),",
-				"     disjoint: true) ~> split1@(, )"
+				"lookup1 split(isNull(srcproductdim.ProductID),",
+				"     disjoint: true) ~> split1@(newRecords, )"
 			]
 		}
 	}
