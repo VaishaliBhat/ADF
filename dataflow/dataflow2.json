@@ -47,6 +47,9 @@
 				},
 				{
 					"name": "dcupdate"
+				},
+				{
+					"name": "union1"
 				}
 			],
 			"scriptLines": [
@@ -99,7 +102,8 @@
 				"          IsActive = true()) ~> dcadditionalcol",
 				"dcupdate alterRow(updateIf(true())) ~> alterupdate",
 				"split1@updatedRecord derive(EndDate = currentTimestamp(),",
-				"          IsActive = false()) ~> dcupdate"
+				"          IsActive = false()) ~> dcupdate",
+				"alterupdate union(byName: true)~> union1"
 			]
 		}
 	}
