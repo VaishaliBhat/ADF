@@ -6,25 +6,29 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "salesADF",
+						"referenceName": "saleswatermarkprj4",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "filter1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
-				"          OrderID as integer,",
+				"          OrderID as string,",
 				"          Product as string,",
-				"          Amount as integer,",
-				"          OrderDate as date",
+				"          Amount as string,",
+				"          OrderDate as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source1"
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 filter(ERROR_FUNCTION('')) ~> filter1"
 			]
 		}
 	}
