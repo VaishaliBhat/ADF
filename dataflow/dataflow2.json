@@ -26,6 +26,9 @@
 				},
 				{
 					"name": "split1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -50,13 +53,14 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srcproductdim",
-				"srccsvprd, srcproductdim lookup(ProductID == srcproductdim@Product,",
+				"derivedColumn1, srcproductdim lookup(ProductID == srcproductdim@Product,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
 				"lookup1 split(isNull(srcproductdim.Product),",
 				"     Price != srcproductdim.Price,",
-				"     disjoint: true) ~> split1@(newRecords, UpdatedRecord, nochange)"
+				"     disjoint: true) ~> split1@(newRecords, UpdatedRecord, nochange)",
+				"srccsvprd derive(ProductID = ERROR_FUNCTION('')) ~> derivedColumn1"
 			]
 		}
 	}
