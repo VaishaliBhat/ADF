@@ -28,7 +28,7 @@
 			],
 			"scriptLines": [
 				"parameters{",
-				"     lastLoadDate as string (@activity('Lookup1').output.firstRow.last_load_date)",
+				"     lastLoadDate as string",
 				"}",
 				"source(output(",
 				"          OrderID as string,",
