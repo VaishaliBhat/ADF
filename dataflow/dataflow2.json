@@ -19,6 +19,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     product_dim as string",
+				"}",
 				"source(output(",
 				"          ProductID as string,",
 				"          Product as string,",
@@ -27,7 +30,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> srccsvprd",
-				"srccsvprd lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"srccsvprd lookup(ProductID == ERROR_FUNCTION(''),",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1"
