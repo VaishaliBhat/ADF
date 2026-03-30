@@ -114,7 +114,7 @@
 				"dcupdate alterRow(updateIf(true())) ~> alterupdate",
 				"split1@updatedRecord derive(EndDate = currentTimestamp(),",
 				"          IsActive = false(),",
-				"          column1 = ERROR_FUNCTION('')) ~> dcupdate",
+				"          StartDate = currentTimestamp()) ~> dcupdate",
 				"alterupdate, alterNewrow union(byName: true)~> unionUpdateNewrow",
 				"unionUpdateNewrow, alterrowInsert union(byName: true)~> updatecombined",
 				"updatecombined sink(allowSchemaDrift: true,",
