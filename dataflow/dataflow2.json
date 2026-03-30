@@ -108,7 +108,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"split1@newrecords alterRow(insertIf(true())) ~> alterNewrow",
 				"dcadditionalcol alterRow(insertIf(true())) ~> alterrowInsert",
-				"split1@updatedRecord derive(StartDate = currentDate(),",
+				"split1@updatedRecord derive(StartDate = currentTimestamp(),",
 				"          EndDate = toTimestamp('9999-12-31'),",
 				"          IsActive = true()) ~> dcadditionalcol",
 				"dcupdate alterRow(updateIf(true())) ~> alterupdate",
