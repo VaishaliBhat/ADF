@@ -39,7 +39,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 filter(toDate(OrderDate) > toDate($lastLoadDate)) ~> filter1",
+				"source1 filter(toDate(OrderDate) > toDate(substring($lastLoadDate,1,10))) ~> filter1",
 				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
