@@ -456,7 +456,7 @@
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "sales"
+					"table": "product_dim"
 				}
 			},
 			"dependsOn": [
@@ -972,6 +972,296 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/saleswatermarkprj4')]",
 				"[concat(variables('factoryId'), '/datasets/salesADF')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_SCD2_prj5')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow2",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"srccsvprd": {},
+									"srcproductdim": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/productblobprj5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "product.csv",
+						"container": "input-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "Product",
+						"type": "String"
+					},
+					{
+						"name": "Price",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "productblobprj5",
+								"type": "DatasetReference"
+							},
+							"name": "srccsvprd"
+						},
+						{
+							"dataset": {
+								"referenceName": "productDimtblprj5",
+								"type": "DatasetReference"
+							},
+							"name": "srcproductdim"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "productDimtblprj5",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "lookup1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "split1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "alterNewrow"
+						},
+						{
+							"name": "alterrowInsert"
+						},
+						{
+							"name": "dcadditionalcol"
+						},
+						{
+							"name": "alterupdate"
+						},
+						{
+							"name": "dcupdate"
+						},
+						{
+							"name": "unionUpdateNewrow"
+						},
+						{
+							"name": "updatecombined"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as string,",
+						"          Product as string,",
+						"          Price as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> srccsvprd",
+						"source(output(",
+						"          ProductID as integer,",
+						"          Product as string,",
+						"          Price as integer,",
+						"          StartDate as date,",
+						"          EndDate as date,",
+						"          IsActive as boolean",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> srcproductdim",
+						"derivedColumn1, srcproductdim lookup(derivedColumn1@ProductID == srcproductdim@ProductID,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> lookup1",
+						"srccsvprd derive(ProductID = toInteger(ProductID),",
+						"          Price = toInteger(Price)) ~> derivedColumn1",
+						"select1 split(isNull(ProductID_dim),",
+						"     Price_src != Price_dim,",
+						"     disjoint: true) ~> split1@(newrecords, updatedRecord, nochange)",
+						"lookup1 select(mapColumn(",
+						"          ProductID_src = derivedColumn1@ProductID,",
+						"          Product_src = srccsvprd@Product,",
+						"          Price_src = derivedColumn1@Price,",
+						"          ProductID_dim = srcproductdim@ProductID,",
+						"          Product_dim = srcproductdim@Product,",
+						"          Price_dim = srcproductdim@Price,",
+						"          StartDate,",
+						"          EndDate,",
+						"          IsActive",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"split1@newrecords alterRow(insertIf(true())) ~> alterNewrow",
+						"dcadditionalcol alterRow(insertIf(true())) ~> alterrowInsert",
+						"split1@updatedRecord derive(StartDate = currentTimestamp(),",
+						"          EndDate = toTimestamp('9999-12-31'),",
+						"          IsActive = true()) ~> dcadditionalcol",
+						"dcupdate alterRow(updateIf(true())) ~> alterupdate",
+						"split1@updatedRecord derive(EndDate = currentTimestamp(),",
+						"          IsActive = false()) ~> dcupdate",
+						"alterupdate, alterNewrow union(byName: true)~> unionUpdateNewrow",
+						"unionUpdateNewrow, alterrowInsert union(byName: true)~> updatecombined",
+						"updatecombined sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ProductID as integer,",
+						"          Product as string,",
+						"          Price as integer,",
+						"          StartDate as date,",
+						"          EndDate as date,",
+						"          IsActive as boolean",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ProductID = ProductID_dim,",
+						"          Product = Product_src,",
+						"          Price = Price_dim,",
+						"          StartDate,",
+						"          EndDate,",
+						"          IsActive",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/productblobprj5')]",
+				"[concat(variables('factoryId'), '/datasets/productDimtblprj5')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/productDimtblprj5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Product",
+						"type": "varchar"
+					},
+					{
+						"name": "Price",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "StartDate",
+						"type": "date"
+					},
+					{
+						"name": "EndDate",
+						"type": "date"
+					},
+					{
+						"name": "IsActive",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "product_dim"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		}
 	]
