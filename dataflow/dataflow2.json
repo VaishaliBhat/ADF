@@ -58,9 +58,6 @@
 					"name": "dcadditionalcol"
 				},
 				{
-					"name": "split2"
-				},
-				{
 					"name": "alterRow3"
 				}
 			],
@@ -108,14 +105,12 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"split1@newrecords alterRow(insertIf(true())) ~> alterRow1",
-				"split2 alterRow(updateIf(true()),",
+				"dcadditionalcol alterRow(updateIf(true()),",
 				"     insertIf(true())) ~> alterRow2",
 				"alterRow3 derive(StartDate = currentDate(),",
 				"          EndDate = toDate('9999-12-31'),",
 				"          IsActive = true()) ~> dcadditionalcol",
-				"dcadditionalcol split(ERROR_FUNCTION(''),",
-				"     disjoint: false) ~> split2@(, )",
-				"split1@updatedRecord alterRow() ~> alterRow3",
+				"split1@updatedRecord alterRow(updateIf(true())) ~> alterRow3",
 				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
