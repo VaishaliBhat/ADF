@@ -19,7 +19,15 @@
 					"name": "srcproductdim"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "productDimtblprj5",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "lookup1"
@@ -101,13 +109,36 @@
 				"split1@newrecords alterRow(insertIf(true())) ~> alterNewrow",
 				"dcadditionalcol alterRow(insertIf(true())) ~> alterrowInsert",
 				"split1@updatedRecord derive(StartDate = currentDate(),",
-				"          EndDate = toDate('9999-12-31'),",
+				"          EndDate = toTimestamp('9999-12-31'),",
 				"          IsActive = true()) ~> dcadditionalcol",
 				"dcupdate alterRow(updateIf(true())) ~> alterupdate",
 				"split1@updatedRecord derive(EndDate = currentTimestamp(),",
 				"          IsActive = false()) ~> dcupdate",
 				"alterupdate, alterNewrow union(byName: true)~> unionUpdateNewrow",
-				"unionUpdateNewrow, alterrowInsert union(byName: true)~> updatecombined"
+				"unionUpdateNewrow, alterrowInsert union(byName: true)~> updatecombined",
+				"updatecombined sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ProductID as integer,",
+				"          Product as string,",
+				"          Price as integer,",
+				"          StartDate as date,",
+				"          EndDate as date,",
+				"          IsActive as boolean",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          StartDate,",
+				"          EndDate,",
+				"          IsActive",
+				"     )) ~> sink1"
 			]
 		}
 	}
