@@ -60,7 +60,7 @@
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
 				"lookup1 split(isNull(srcproductdim.ProductID),",
-				"     derivedColumn1@Price != srcproductdim.Price,",
+				"     Price != srcproductdim.Price,",
 				"     disjoint: true) ~> split1@(newRecords, UpdatedRecord, nochange)",
 				"srccsvprd derive(ProductID = toInteger(ProductID),",
 				"          Price = toInteger(Price)) ~> derivedColumn1"
