@@ -49,7 +49,7 @@
 					"name": "dcupdate"
 				},
 				{
-					"name": "union1"
+					"name": "unionUpdateNewrow"
 				}
 			],
 			"scriptLines": [
@@ -103,7 +103,7 @@
 				"dcupdate alterRow(updateIf(true())) ~> alterupdate",
 				"split1@updatedRecord derive(EndDate = currentTimestamp(),",
 				"          IsActive = false()) ~> dcupdate",
-				"alterupdate union(byName: true)~> union1"
+				"alterupdate, alterNewrow union(byName: true)~> unionUpdateNewrow"
 			]
 		}
 	}
