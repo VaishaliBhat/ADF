@@ -25,16 +25,13 @@
 					"name": "lookup1"
 				},
 				{
-					"name": "split1"
+					"name": "derivedColumn1"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "split1"
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"     product_dim as string",
-				"}",
 				"source(output(",
 				"          ProductID as string,",
 				"          Product as string,",
@@ -59,11 +56,10 @@
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
-				"lookup1 split(isNull(srcproductdim.ProductID),",
-				"     Price != srcproductdim.Price,",
-				"     disjoint: true) ~> split1@(newRecords, UpdatedRecord, nochange)",
 				"srccsvprd derive(ProductID = toInteger(ProductID),",
-				"          Price = toInteger(Price)) ~> derivedColumn1"
+				"          Price = toInteger(Price)) ~> derivedColumn1",
+				"lookup1 split(Price != srcproductdim.Price,",
+				"     disjoint: false) ~> split1@(newrecords, )"
 			]
 		}
 	}
