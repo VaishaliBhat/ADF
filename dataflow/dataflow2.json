@@ -19,15 +19,7 @@
 					"name": "srcproductdim"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "productDimtblprj5",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "lookup1"
@@ -52,6 +44,9 @@
 				},
 				{
 					"name": "alterupdate"
+				},
+				{
+					"name": "dcupdate"
 				}
 			],
 			"scriptLines": [
@@ -102,31 +97,9 @@
 				"split1@updatedRecord derive(StartDate = currentDate(),",
 				"          EndDate = toDate('9999-12-31'),",
 				"          IsActive = true()) ~> dcadditionalcol",
-				"split1@updatedRecord alterRow(updateIf(true())) ~> alterupdate",
-				"alterRow1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          ProductID as integer,",
-				"          Product as string,",
-				"          Price as integer,",
-				"          StartDate as date,",
-				"          EndDate as date,",
-				"          IsActive as boolean",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          StartDate,",
-				"          EndDate,",
-				"          IsActive",
-				"     ),",
-				"     partitionBy('roundRobin', 3)) ~> sink1"
+				"dcupdate alterRow(updateIf(true())) ~> alterupdate",
+				"split1@updatedRecord derive(EndDate = currentTimestamp(),",
+				"          IsActive = ERROR_FUNCTION('')) ~> dcupdate"
 			]
 		}
 	}
