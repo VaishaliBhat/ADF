@@ -29,6 +29,9 @@
 				},
 				{
 					"name": "split1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -58,9 +61,22 @@
 				"     broadcast: 'auto')~> lookup1",
 				"srccsvprd derive(ProductID = toInteger(ProductID),",
 				"          Price = toInteger(Price)) ~> derivedColumn1",
-				"lookup1 split(isNull(srcproductdim.ProductID),",
-				"     Price != srcproductdim.Price,",
-				"     disjoint: true) ~> split1@(newrecords, updatedRecord, nochange)"
+				"select1 split(isNull(srcproductdim.ProductID),",
+				"     Price_DC != srcproductdim.Price,",
+				"     disjoint: true) ~> split1@(newrecords, updatedRecord, nochange)",
+				"lookup1 select(mapColumn(",
+				"          ProductID_DC = derivedColumn1@ProductID,",
+				"          Product_src = srccsvprd@Product,",
+				"          Price_DC = derivedColumn1@Price,",
+				"          ProductID_src = srcproductdim@ProductID,",
+				"          Product = srcproductdim@Product,",
+				"          Price = srcproductdim@Price,",
+				"          StartDate,",
+				"          EndDate,",
+				"          IsActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
