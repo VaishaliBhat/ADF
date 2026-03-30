@@ -99,7 +99,7 @@
 				"          IsActive = true()) ~> dcadditionalcol",
 				"dcupdate alterRow(updateIf(true())) ~> alterupdate",
 				"split1@updatedRecord derive(EndDate = currentTimestamp(),",
-				"          IsActive = ERROR_FUNCTION('')) ~> dcupdate"
+				"          IsActive = false()) ~> dcupdate"
 			]
 		}
 	}
