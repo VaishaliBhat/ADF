@@ -39,7 +39,11 @@
 						"referenceName": "productDimtblprj5",
 						"type": "DatasetReference"
 					},
-					"name": "sink3"
+					"name": "updateSinkProductDIm",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
@@ -177,11 +181,8 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          ProductID = ProductID_dim,",
-				"          StartDate,",
-				"          EndDate,",
-				"          IsActive",
-				"     )) ~> sink3"
+				"          ProductID = ProductID_dim",
+				"     )) ~> updateSinkProductDIm"
 			]
 		}
 	}
