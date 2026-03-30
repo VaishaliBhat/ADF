@@ -60,7 +60,7 @@
 				"          Price = toInteger(Price)) ~> derivedColumn1",
 				"lookup1 split(isNull(srcproductdim.ProductID),",
 				"     Price != srcproductdim.Price,",
-				"     disjoint: false) ~> split1@(newrecords, updatedRecord, nochange)"
+				"     disjoint: true) ~> split1@(newrecords, updatedRecord, nochange)"
 			]
 		}
 	}
