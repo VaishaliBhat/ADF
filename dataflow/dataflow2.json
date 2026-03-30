@@ -121,7 +121,7 @@
 				"alterupdate, alterNewrow union(byName: true)~> unionUpdateNewrow",
 				"unionUpdateNewrow, alterrowInsert union(byName: true)~> updatecombined",
 				"split1@newrecords derive(StartDate = currentTimestamp(),",
-				"          EndDate = currentTimestamp()) ~> derivedColumn2",
+				"          EndDate = ERROR_FUNCTION('')) ~> derivedColumn2",
 				"updatecombined sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
