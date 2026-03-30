@@ -107,7 +107,7 @@
 				"split1@updatedRecord derive(EndDate = currentTimestamp(),",
 				"          IsActive = false()) ~> dcupdate",
 				"alterupdate, alterNewrow union(byName: true)~> unionUpdateNewrow",
-				"unionUpdateNewrow, alterupdate union(byName: true)~> updatecombined"
+				"unionUpdateNewrow, alterrowInsert union(byName: true)~> updatecombined"
 			]
 		}
 	}
