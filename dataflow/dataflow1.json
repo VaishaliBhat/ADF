@@ -14,6 +14,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "salesADF",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
 				}
 			],
@@ -24,7 +28,7 @@
 			],
 			"scriptLines": [
 				"parameters{",
-				"     lastLoadDate as string",
+				"     lastLoadDate as string (@activity('Lookup1').output.firstRow.last_load_date)",
 				"}",
 				"source(output(",
 				"          OrderID as string,",
@@ -38,8 +42,20 @@
 				"source1 filter(toDate(OrderDate) > toDate($lastLoadDate)) ~> filter1",
 				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          OrderID as integer,",
+				"          Product as string,",
+				"          Amount as integer,",
+				"          OrderDate as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
