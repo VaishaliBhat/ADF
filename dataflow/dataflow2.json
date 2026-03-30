@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "srccsvprd"
+				},
+				{
+					"dataset": {
+						"referenceName": "salesADF",
+						"type": "DatasetReference"
+					},
+					"name": "srcproductdim"
 				}
 			],
 			"sinks": [],
@@ -30,7 +37,17 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> srccsvprd",
-				"srccsvprd lookup(ProductID == ERROR_FUNCTION(''),",
+				"source(output(",
+				"          OrderID as integer,",
+				"          Product as string,",
+				"          Amount as integer,",
+				"          OrderDate as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcproductdim",
+				"srccsvprd, srcproductdim lookup(ProductID == srcproductdim@Product,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1"

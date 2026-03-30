@@ -29,7 +29,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "sales"
+			"table": "product_dim"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
