@@ -16,6 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"packageLocation": {
+						"packagePath": "ETL_project/pkgprj6SCD2SSISAzure/Package.dtsx",
 						"type": "SSISDB"
 					},
 					"environmentPath": null,
