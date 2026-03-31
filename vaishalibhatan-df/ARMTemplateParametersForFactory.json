@@ -19,6 +19,15 @@
 		},
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
 			"value": "adfserver123"
+		},
+		"SSISIrDev_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"value": "adfserver123.database.windows.net"
+		},
+		"SSISIrDev_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"value": "adfserver123"
+		},
+		"SSISIrDev_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"value": ""
 		}
 	}
 }
