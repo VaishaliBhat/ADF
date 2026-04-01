@@ -158,11 +158,11 @@
 					"storedProcedureName": "[dbo].[sp_log_pipeline_error]",
 					"storedProcedureParameters": {
 						"ActivityName": {
-							"value": "",
+							"value": "'CopyProducts'",
 							"type": "String"
 						},
 						"ErrorMessage": {
-							"value": "",
+							"value": "'NA'",
 							"type": "String"
 						},
 						"PipelineName": {
@@ -174,7 +174,7 @@
 							"type": "DateTime"
 						},
 						"Status": {
-							"value": "",
+							"value": "'Success'",
 							"type": "String"
 						}
 					}
