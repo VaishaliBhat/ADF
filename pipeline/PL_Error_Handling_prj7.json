@@ -121,10 +121,11 @@
 							"type": "String"
 						},
 						"RunTime": {
+							"value": "@utcNow()",
 							"type": "DateTime"
 						},
 						"Status": {
-							"value": "",
+							"value": "'Failed'",
 							"type": "String"
 						}
 					}
@@ -133,6 +134,26 @@
 					"referenceName": "AzureSqlDatabase1",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "CopyProducts",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"annotations": []
