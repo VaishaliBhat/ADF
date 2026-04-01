@@ -56,8 +56,8 @@
 							{
 								"source": {
 									"name": "Price",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "Int32",
+									"physicalType": "int"
 								},
 								"sink": {
 									"name": "Price",
