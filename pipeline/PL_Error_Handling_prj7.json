@@ -104,7 +104,36 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_log_pipeline_error]",
+					"storedProcedureParameters": {
+						"ActivityName": {
+							"value": "'CopyProducts'",
+							"type": "String"
+						},
+						"ErrorMessage": {
+							"value": "",
+							"type": "String"
+						},
+						"PipelineName": {
+							"value": "",
+							"type": "String"
+						},
+						"RunTime": {
+							"value": "",
+							"type": "DateTime"
+						},
+						"Status": {
+							"value": "",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
