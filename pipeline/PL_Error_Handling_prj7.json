@@ -166,11 +166,11 @@
 							"type": "String"
 						},
 						"PipelineName": {
-							"value": "",
+							"value": "@pipeline().Pipeline",
 							"type": "String"
 						},
 						"RunTime": {
-							"value": "",
+							"value": "@utcNow()",
 							"type": "DateTime"
 						},
 						"Status": {
