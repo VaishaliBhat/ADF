@@ -113,15 +113,14 @@
 							"type": "String"
 						},
 						"ErrorMessage": {
-							"value": "",
+							"value": "@activity('CopyProducts').Error.Message",
 							"type": "String"
 						},
 						"PipelineName": {
-							"value": "",
+							"value": "@pipeline().Pipeline",
 							"type": "String"
 						},
 						"RunTime": {
-							"value": "",
 							"type": "DateTime"
 						},
 						"Status": {
