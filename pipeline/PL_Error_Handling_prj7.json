@@ -87,9 +87,16 @@
 				]
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "LogFailure",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "CopyProducts",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
